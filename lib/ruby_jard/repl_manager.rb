@@ -14,7 +14,7 @@ module RubyJard
       @state = RubyJard::ReplState.new
       @interceptor = RubyJard::ReplInterceptor.new(@state, @console)
 
-      Signal.trap('SIGWINCH') { start_resizing }
+      Signal.trap('SIGWINCH') { start_resizing } unless Gem.win_platform?
     end
 
     def repl(current_binding)
