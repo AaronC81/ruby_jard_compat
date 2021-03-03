@@ -33,25 +33,25 @@ module RubyJard
       raise RubyJard::Error, 'Expected Thread object or nil' if !thread.is_a?(::Thread) && !thread.nil?
 
       @thread = thread
-      @id = thread&.object_id
+      @id = thread.jard_nilsafe(:object_id)
       @label = self.class.generate_label_for(@id)
     end
 
     def name
-      @thread&.name
+      @thread.jard_nilsafe(:name)
     end
 
     def status
-      s = @thread&.status
+      s = @thread.jard_nilsafe(:status)
       s == false ? 'exited' : s
     end
 
     def alive?
-      @thread&.alive? || false
+      @thread.jard_nilsafe(:alive?) || false
     end
 
     def backtrace_locations
-      @thread&.backtrace_locations || []
+      @thread.jard_nilsafe(:backtrace_locations) || []
     end
 
     # rubocop:disable Style/CaseLikeIf

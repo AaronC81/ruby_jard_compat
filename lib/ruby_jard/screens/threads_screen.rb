@@ -9,7 +9,7 @@ module RubyJard
 
       def initialize(**args)
         super(**args)
-        @current_frame_location = @session.current_frame&.frame_location
+        @current_frame_location = @session.current_frame.jard_nilsafe(:frame_location)
         @current_thread = @session.current_thread
         @threads = @session.threads
 
@@ -76,8 +76,8 @@ module RubyJard
             )
           else
             @path_decorator.decorate(
-              thread.backtrace_locations[1]&.path,
-              thread.backtrace_locations[1]&.lineno
+              thread.backtrace_locations[1].jard_nilsafe(:path),
+              thread.backtrace_locations[1].jard_nilsafe(:lineno)
             )
           end
         text_primary(path_label)

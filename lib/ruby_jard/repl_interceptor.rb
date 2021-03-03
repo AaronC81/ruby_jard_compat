@@ -67,7 +67,7 @@ module RubyJard
       if interceptable?
         sleep OUTPUT_TICK until @state.exited?
       end
-      @key_listen_thread&.exit if @key_listen_thread&.alive?
+      @key_listen_thread.jard_nilsafe(:exit) if @key_listen_thread.jard_nilsafe(:alive?)
     end
 
     def dispatch_command(command)
@@ -212,7 +212,7 @@ module RubyJard
 
     def handle_interrupt_command
       @state.check(:ready?) do
-        @main_thread&.raise Interrupt if @main_thread&.alive?
+        @main_thread.jard_nilsafe(:raise, Interrupt) if @main_thread.jard_nilsafe(:alive?)
       end
       loop do
         begin
@@ -220,7 +220,7 @@ module RubyJard
         rescue Interrupt
           # Interrupt spam. Ignore.
         end
-        break unless @main_thread&.pending_interrupt?
+        break unless @main_thread.jard_nilsafe(:pending_interrupt?)
       end
     end
 

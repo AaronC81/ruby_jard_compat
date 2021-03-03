@@ -9,8 +9,8 @@ module RubyJard
 
       def initialize(**args)
         super(**args)
-        @frame_file = @session.current_frame&.frame_file
-        @frame_line = @session.current_frame&.frame_line
+        @frame_file = @session.current_frame.jard_nilsafe(:frame_file)
+        @frame_line = @session.current_frame.jard_nilsafe(:frame_line)
 
         if !@frame_file.nil? && !@frame_line.nil?
           @path_decorator = RubyJard::Decorators::PathDecorator.new

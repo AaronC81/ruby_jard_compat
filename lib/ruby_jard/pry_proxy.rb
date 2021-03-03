@@ -116,16 +116,16 @@ module RubyJard
     def pry_hooks
       hooks = Pry::Hooks.default
       hooks.add_hook(:after_read, :jard_proxy_acquire_lock) do |_read_string, _pry|
-        @state_hooks[:after_read]&.call
+        @state_hooks[:after_read].jard_nilsafe(:call)
       end
       hooks.add_hook(:after_handle_line, :jard_proxy_release_lock) do
-        @state_hooks[:after_handle_line]&.call
+        @state_hooks[:after_handle_line].jard_nilsafe(:call)
       end
       hooks.add_hook(:before_pager, :jard_proxy_before_pager) do
-        @state_hooks[:before_pager]&.call
+        @state_hooks[:before_pager].jard_nilsafe(:call)
       end
       hooks.add_hook(:after_pager, :jard_proxy_after_pager) do
-        @state_hooks[:after_pager]&.call
+        @state_hooks[:after_pager].jard_nilsafe(:call)
       end
     end
   end

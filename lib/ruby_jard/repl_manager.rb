@@ -81,7 +81,7 @@ module RubyJard
       @resizing_output_mark = @console.stdout_storage.length
       @resizing_dispatched = false
       unless @state.processing?
-        @resizing_readline_buffer = @pry_proxy&.line_buffer
+        @resizing_readline_buffer = @pry_proxy.jard_nilsafe(:line_buffer)
         dispatch_resize!
       end
     end

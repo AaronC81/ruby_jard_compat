@@ -43,11 +43,11 @@ module RubyJard
       def initialize(**args)
         super(**args)
 
-        @frame_file = @session.current_frame&.frame_file
-        @frame_line = @session.current_frame&.frame_line
-        @frame_self = @session.current_frame&.frame_self
-        @frame_class = @session.current_frame&.frame_class
-        @frame_binding = @session.current_frame&.frame_binding
+        @frame_file = @session.current_frame.jard_nilsafe(:frame_file)
+        @frame_line = @session.current_frame.jard_nilsafe(:frame_line)
+        @frame_self = @session.current_frame.jard_nilsafe(:frame_self)
+        @frame_class = @session.current_frame.jard_nilsafe(:frame_class)
+        @frame_binding = @session.current_frame.jard_nilsafe(:frame_binding)
 
         @inline_tokens = generate_inline_tokens(@frame_file, @frame_line)
         @file_tokens = generate_file_tokens(@frame_file)
@@ -137,7 +137,7 @@ module RubyJard
         # Exclude Pry's sticky locals
         pry_sticky_locals =
           if variables.include?(:pry_instance)
-            @frame_binding.local_variable_get(:pry_instance)&.sticky_locals&.keys || []
+            @frame_binding.local_variable_get(:pry_instance).jard_nilsafe(:sticky_locals).jard_nilsafe(:keys) || []
           else
             []
           end
@@ -169,7 +169,7 @@ module RubyJard
 
         # Filter out truly constants (CONSTANT convention) only
         constant_source =
-          if @frame_class&.singleton_class?
+          if @frame_class.jard_nilsafe(:singleton_class?)
             @frame_self
           else
             @frame_class
