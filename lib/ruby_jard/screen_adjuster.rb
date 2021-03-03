@@ -24,7 +24,7 @@ module RubyJard
 
         next if shrinkable_screens.empty? || expandable_screens.empty?
 
-        budget = shrinkable_screens.map { |s| shrinkable_height(s) }.sum
+        budget = shrinkable_screens.map { |s| shrinkable_height(s) }.inject(:+)
         expand_screens(expandable_screens, budget)
         shrink_screens(shrinkable_screens)
         compact_screens(grouped_screens)

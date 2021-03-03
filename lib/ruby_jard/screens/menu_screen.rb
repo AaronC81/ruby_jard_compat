@@ -74,8 +74,8 @@ module RubyJard
       def align(left_spans, right_spans)
         alignment =
           @layout.width -
-          right_spans.map(&:content_length).sum -
-          left_spans.map(&:content_length).sum
+          right_spans.map(&:content_length).inject(:+) -
+          left_spans.map(&:content_length).inject(:+)
         RubyJard::Span.new(
           content: ' ' * (alignment < 0 ? 0 : alignment),
           styles: :background
